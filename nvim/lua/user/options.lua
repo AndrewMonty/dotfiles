@@ -9,7 +9,7 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.smartindent = true
 vim.opt.list = true -- enable the below listchars
-vim.opt.listchars = { tab = '▸ ', trail = '·' }
+vim.opt.listchars = { trail = '·' }
 vim.opt.fillchars:append({ eob = ' ' })
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
