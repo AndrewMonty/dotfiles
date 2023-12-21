@@ -24,8 +24,6 @@ use('ThePrimeagen/vim-be-good')
 
 use('wbthomason/packer.nvim')
 
-use('ryanoasis/vim-devicons')
-
 use('tpope/vim-surround')
 
 use('tpope/vim-commentary')
@@ -39,6 +37,15 @@ use('farmergreg/vim-lastplace')
 use('tpope/vim-sleuth')
 
 use('tpope/vim-repeat')
+
+use({
+  'ray-x/go.nvim',
+  config = function()
+    require('go').setup()
+  end,
+})
+
+use('ray-x/guihua.lua')
 
 use({
   'windwp/nvim-autopairs',
@@ -64,7 +71,6 @@ use({
 
 use({
     'nvim-lualine/lualine.nvim',
-    requires = 'kyazdani42/nvim-web-devicons',
     config = function()
         require('user.plugins.lualine')
     end,
@@ -72,9 +78,6 @@ use({
 
 use({
     'nvim-tree/nvim-tree.lua',
-    requires = {
-        'nvim-tree/nvim-web-devicons', -- optional, for file icons
-    },
     config = function ()
         require('user.plugins.nvim-tree')
     end,
@@ -85,7 +88,6 @@ use({
     after = 'nightfox.nvim',
     requires = {
         { 'nvim-lua/plenary.nvim' },
-        { 'kyazdani42/nvim-web-devicons' },
         { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
         { 'nvim-telescope/telescope-live-grep-args.nvim' },
     },
@@ -157,26 +159,6 @@ use({
   end,
 })
 
--- use({
---   'projekt0n/github-nvim-theme',
---   config = function()
---     require('github-theme').setup({
---         options = {
---             transparent = false,
---             darken = {
---                 floats = true,
---                 sidebars = {
---                     enable = true,
---                     list = { "terminal", "NvimTree", "term", "packer" }
---                 },
---             }
---         },
---     })
-
---     vim.cmd('colorscheme github_light')
---   end
--- })
-
 use({
     'EdenEast/nightfox.nvim',
     config = function()
@@ -187,16 +169,8 @@ use({
         })
 
         vim.cmd("colorscheme carbonfox")
-        -- vim.cmd("colorscheme dawnfox")
     end,
 })
-
--- use({
---     'folke/tokyonight.nvim',
---     config = function ()
---         vim.cmd("colorscheme tokyonight")
---     end,
--- })
 
 use({
     'lukas-reineke/indent-blankline.nvim',
@@ -213,3 +187,18 @@ use({
         require('user/plugins/vim-test')
     end,
 })
+
+use({
+    'f-person/auto-dark-mode.nvim',
+    config = function()
+        require('auto-dark-mode').setup({
+            set_dark_mode = function()
+                vim.cmd("colorscheme carbonfox")
+            end,
+            set_light_mode = function()
+                vim.cmd("colorscheme dayfox")
+            end
+        })
+    end
+})
+
