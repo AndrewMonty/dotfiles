@@ -12,29 +12,28 @@ return {
       desc = '[F]ormat buffer',
     },
   },
-  opts = {
-    notify_on_error = false,
-    format_on_save = false,
-    -- format_on_save = function(bufnr)
-    --   -- Disable "format_on_save lsp_fallback" for languages that don't
-    --   -- have a well standardized coding style. You can add additional
-    --   -- languages here or re-enable it for the disabled ones.
-    --   local disable_filetypes = { c = true, cpp = true }
-    --   return {
-    --     timeout_ms = 500,
-    --     lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-    --   }
-    -- end,
-    formatters_by_ft = {
-      astro = { { 'prettier', 'prettierd' } },
-      lua = { 'stylua' },
-      -- Conform can also run multiple formatters sequentially
-      -- python = { "isort", "black" },
-      --
-      -- You can use a sub-list to tell conform to run *until* a formatter
-      -- is found.
-      javascript = { { 'prettier', 'prettierd' } },
-      typescript = { { 'prettier', 'prettierd' } },
-    },
-  },
+  config = function()
+    require("conform").setup({
+      log_level = vim.log.levels.DEBUG,
+      notify_on_error = false,
+      -- format_on_save = function(bufnr)
+      --   -- Disable "format_on_save lsp_fallback" for languages that don't
+      --   -- have a well standardized coding style. You can add additional
+      --   -- languages here or re-enable it for the disabled ones.
+      --   local disable_filetypes = { c = true, cpp = true }
+      --   return {
+      --     timeout_ms = 500,
+      --     lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+      --   }
+      -- end,
+      formatters_by_ft = {
+        astro = { 'prettierd', 'prettier' },
+        lua = { 'stylua' },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreact = { 'prettierd', stop_after_first = true },
+      },
+    })
+  end,
 }

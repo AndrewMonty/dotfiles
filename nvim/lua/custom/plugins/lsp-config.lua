@@ -79,19 +79,31 @@ return { -- LSP Configuration & Plugins
       -- pyright = {},
       -- rust_analyzer = {},
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-      tsserver = {
+      ts_ls = {
         filetypes = {
+          'javascript',
           'typescript',
           'typescriptreact',
           'typescript.tsx',
         },
+        settings = {
+          implicitProjectConfiguration = {
+            checkJs = true,
+          },
+        },
       },
-      intelephense = {},
+      -- intelephense = {
+      --   filetypes = { 'php', 'blade.php' },
+      --   diagnostics = {
+      --     returnType = false,
+      --   },
+      -- },
       html = {},
+      cssls = {},
       emmet_ls = {},
       tailwindcss = {},
       astro = {},
-
+      jsonls = {},
       lua_ls = {
         -- cmd = {...},
         -- filetypes = { ...},
@@ -118,6 +130,8 @@ return { -- LSP Configuration & Plugins
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
     require('mason-lspconfig').setup {
+      ensure_installed = ensure_installed,
+      automatic_installation = true,
       handlers = {
         function(server_name)
           local server = servers[server_name] or {}
@@ -133,23 +147,30 @@ return { -- LSP Configuration & Plugins
     vim.diagnostic.config {
       -- hide inline diagnostic output
       virtual_text = false,
-      float = {
-        source = true,
-      },
+      -- float = {
+      --   source = true,
+      --   border = _border,
+      --   style = 'minimal',
+      --   bg = 'NONE',
+      -- },
     }
 
-    -- local _border = 'rounded'
-    --
     -- vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
     --   border = _border,
+    --     bg = 'NONE',
     -- })
     --
     -- vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
     --   border = _border,
+    --   style = 'minimal',
+    --   bg = 'NONE',
     -- })
     --
     -- vim.diagnostic.config {
-    --   float = { border = _border },
+    --   float = {
+    --     border = _border,
+    --     bg = 'NONE',
+    --   },
     -- }
 
     vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError' })

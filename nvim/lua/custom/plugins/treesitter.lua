@@ -4,7 +4,7 @@ return {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
   opts = {
-    ensure_installed = { 'astro', 'bash', 'c', 'html', 'javascript', 'lua', 'luadoc', 'markdown', 'php', 'typescript', 'vim', 'vimdoc' },
+    ensure_installed = { 'astro', 'bash', 'c', 'html', 'javascript', 'lua', 'luadoc', 'markdown', 'php', 'php_only', 'typescript', 'vim', 'vimdoc', 'css', 'tsx' },
     -- Autoinstall languages that are not installed
     auto_install = true,
     highlight = {
@@ -18,6 +18,27 @@ return {
   },
   config = function(_, opts)
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+
+    local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+
+    ---@diagnostic disable-next-line: inject-field
+    parser_config.blade = {
+      tier = "community",
+      install_info = {
+        url = 'https://github.com/EmranMR/tree-sitter-blade',
+        files = { 'src/parser.c' },
+        branch = 'main',
+        generate_requires_npm = true,
+        requires_generate_from_grammar = true,
+      },
+      filetype = 'blade',
+    }
+
+    vim.filetype.add {
+      pattern = {
+        ['.*%.blade%.php'] = 'blade',
+      },
+    }
 
     ---@diagnostic disable-next-line: missing-fields
     require('nvim-treesitter.configs').setup(opts)

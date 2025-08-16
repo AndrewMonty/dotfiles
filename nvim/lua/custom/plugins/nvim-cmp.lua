@@ -36,9 +36,24 @@ return {
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-path',
     'hrsh7th/cmp-cmdline',
+    'luckasRanarison/tailwind-tools.nvim',
+    'onsails/lspkind-nvim',
   },
+  opts = function()
+    return {
+      -- ...
+      formatting = {
+        format = require('lspkind').cmp_format {
+          before = require('tailwind-tools.cmp').lspkind_format,
+        },
+      },
+    }
+  end,
   config = function()
-    -- See `:help cmp`
+    local kind_icons = {
+      BladeNav = '',
+    }
+
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
     luasnip.config.setup {}
@@ -102,33 +117,45 @@ return {
         { name = 'luasnip' },
         { name = 'path' },
       },
-      -- window = {
-      --   completion = {
-      --     border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
-      --     scrollbar = false,
-      --   },
-      --   documentation = {
-      --     border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
-      --     scrollbar = false,
-      --   },
-      -- },
+      formatting = {
+        format = function(entry, item)
+          if kind_icons[item.kind] then
+            item.kind = string.format('%s %s', kind_icons[item.kind], item.kind)
+          end
+
+          return item
+        end,
+      },
+      window = {
+        completion = {
+          border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
+          bg = 'NONE',
+          scrollbar = false,
+        },
+        documentation = {
+          border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
+          bg = 'NONE',
+          scrollbar = false,
+        },
+      },
     }
+
     -- set highlights for completion types
     -- grey
-    vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { bg = "NONE", strikethrough = true, fg = "#808080" })
+    vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', strikethrough = true, fg = '#808080' })
     -- blue
-    vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { bg = "NONE", fg = "#569CD6" })
-    vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { link = "CmpIntemAbbrMatch" })
+    vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { bg = 'NONE', fg = '#569CD6' })
+    vim.api.nvim_set_hl(0, 'CmpItemAbbrMatchFuzzy', { link = 'CmpIntemAbbrMatch' })
     -- light blue
-    vim.api.nvim_set_hl(0, "CmpItemKindVariable", { bg = "NONE", fg = "#9CDCFE" })
-    vim.api.nvim_set_hl(0, "CmpItemKindInterface", { link = "CmpItemKindVariable" })
-    vim.api.nvim_set_hl(0, "CmpItemKindText", { link = "CmpItemKindVariable" })
+    vim.api.nvim_set_hl(0, 'CmpItemKindVariable', { bg = 'NONE', fg = '#9CDCFE' })
+    vim.api.nvim_set_hl(0, 'CmpItemKindInterface', { link = 'CmpItemKindVariable' })
+    vim.api.nvim_set_hl(0, 'CmpItemKindText', { link = 'CmpItemKindVariable' })
     -- pink
-    vim.api.nvim_set_hl(0, "CmpItemKindFunction", { bg = "NONE", fg = "#C586C0" })
-    vim.api.nvim_set_hl(0, "CmpItemKindMethod", { link = "CmpItemKindFunction" })
+    vim.api.nvim_set_hl(0, 'CmpItemKindFunction', { bg = 'NONE', fg = '#C586C0' })
+    vim.api.nvim_set_hl(0, 'CmpItemKindMethod', { link = 'CmpItemKindFunction' })
     -- front
-    vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { bg = "NONE", fg = "#D4D4D4" })
-    vim.api.nvim_set_hl(0, "CmpItemKindProperty", { link = "CmpItemKindKeyword" })
-    vim.api.nvim_set_hl(0, "CmpItemKindUnit", { link = "CmpItemKindKeyword" })
+    vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg = 'NONE', fg = '#D4D4D4' })
+    vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { link = 'CmpItemKindKeyword' })
+    vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { link = 'CmpItemKindKeyword' })
   end,
 }

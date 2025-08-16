@@ -50,3 +50,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- prevent "c" replacing contents of clipboard
 vim.api.nvim_set_keymap('n', 'c', '"_c', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', 'C', '"_C', { noremap = true, silent = true })
+
+-- quickly delete a buffer
+vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = '[B]uffer [D]elete' })
+
+-- toggle zen mode
+vim.keymap.set('n', '<leader>z', '<cmd>Zen<CR>', { desc = '[Z]en mode' })
+

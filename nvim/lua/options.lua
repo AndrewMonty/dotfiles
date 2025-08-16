@@ -52,28 +52,25 @@ vim.opt.inccommand = 'split'
 -- Show which line your cursor is on
 vim.opt.cursorline = true
 
--- Bring attention to the current line number without highlighting the whole line
-vim.opt.cursorlineopt = 'number'
-
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 5
 
 -- Control whether lines longer than the terminal window wrap to a new line
 vim.opt.wrap = false
 
-local transparent_highlights = {
-  'Normal',
-  'NormalNC',
-  'LineNr',
-  'Folded',
-  'NonText',
-  'SpecialKey',
-  'VertSplit',
-  'SignColumn',
-  'EndOfBuffer',
-  'TablineFill', -- this might be preference
-}
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
 
-for _, hl in ipairs(transparent_highlights) do
-  vim.cmd.highlight(hl .. ' guibg=NONE ctermbg=NONE')
-end
+-- enable true color
+vim.opt.termguicolors = true
+
+-- local utils = require('./utils')
+-- utils.setTransparentHighlights()
+
+-- remove background from completion list
+vim.opt.pumblend = 0
+
+-- remove background from documentation popup
+vim.opt.winblend = 0
+
