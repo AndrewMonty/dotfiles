@@ -1,10 +1,161 @@
 #!/usr/bin/env bash
 
-DOTFILES=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+set -euo pipefail
 
-rm -rf $HOME/.config/nvim
-ln -s $DOTFILES/nvim $HOME/.config/nvim
+DOTFILES=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
-rm -rf $HOME/.tmux.conf
-ln -s $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
+has_command() {
+	command -v "$1" >/dev/null 2>&1
+}
 
+has_brew_package() {
+	brew list "$1" >/dev/null 2>&1
+}
+
+has_brew_cask() {
+	brew list --cask "$1" >/dev/null 2>&1
+}
+
+info() {
+	printf '%s\n' "$*"
+}
+
+die() {
+	printf 'Error: %s\n' "$*" >&2
+	exit 1
+}
+
+detect_platform() {
+	case "$(uname -s)" in
+		Darwin)
+			printf 'macos'
+			;;
+		Linux)
+			printf 'linux'
+			;;
+		*)
+			die "unsupported platform: $(uname -s)"
+			;;
+	esac
+}
+
+detect_package_manager() {
+	local platform=$1
+
+	if [ "$platform" = "macos" ]; then
+		if has_command brew; then
+			printf 'brew'
+			return
+		fi
+
+		die "Homebrew is required on macOS: https://brew.sh"
+	fi
+
+	local package_manager
+	for package_manager in apt-get dnf pacman zypper apk; do
+		if has_command "$package_manager"; then
+			printf '%s' "$package_manager"
+			return
+		fi
+	done
+
+	die "no supported Linux package manager found; expected apt-get, dnf, pacman, zypper, or apk"
+}
+
+run_with_sudo() {
+	if [ "$(id -u)" -eq 0 ]; then
+		"$@"
+	else
+		sudo "$@"
+	fi
+}
+
+install_package() {
+	local package_manager=$1
+	local package=$2
+
+	case "$package_manager" in
+		brew)
+			brew install "$package"
+			;;
+		apt-get)
+			if [ "${APT_UPDATED:-0}" -eq 0 ]; then
+				run_with_sudo apt-get update
+				APT_UPDATED=1
+			fi
+			run_with_sudo apt-get install -y "$package"
+			;;
+		dnf)
+			run_with_sudo dnf install -y "$package"
+			;;
+		pacman)
+			run_with_sudo pacman -S --needed --noconfirm "$package"
+			;;
+		zypper)
+			run_with_sudo zypper install -y "$package"
+			;;
+		apk)
+			run_with_sudo apk add "$package"
+			;;
+		*)
+			die "unsupported package manager: $package_manager"
+			;;
+	esac
+}
+
+install_ghostty() {
+	local platform=$1
+	local package_manager=$2
+
+	if has_command ghostty || { [ "$package_manager" = "brew" ] && has_brew_cask ghostty; }; then
+		info "ghostty already installed"
+		return
+	fi
+
+	case "$platform:$package_manager" in
+		macos:brew)
+			info "Installing ghostty..."
+			brew install --cask ghostty
+			;;
+		linux:pacman)
+			info "Installing ghostty..."
+			install_package "$package_manager" ghostty
+			;;
+		*)
+			info "ghostty is not installed; skipping automatic install for $package_manager"
+			info "Install Ghostty manually from https://ghostty.org/docs/install"
+			;;
+	esac
+}
+
+ensure_package() {
+	local binary=$1
+	local package=$2
+	local package_manager=$3
+
+	if has_command "$binary" || { [ "$package_manager" = "brew" ] && has_brew_package "$package"; }; then
+		info "$binary already installed"
+		return
+	fi
+
+	info "Installing $package..."
+	install_package "$package_manager" "$package"
+}
+
+platform=$(detect_platform)
+package_manager=$(detect_package_manager "$platform")
+
+ensure_package nvim neovim "$package_manager"
+ensure_package tmux tmux "$package_manager"
+install_ghostty "$platform" "$package_manager"
+
+mkdir -p "$HOME/.config"
+
+rm -rf "$HOME/.config/nvim"
+ln -s "$DOTFILES/nvim" "$HOME/.config/nvim"
+
+rm -rf "$HOME/.tmux.conf"
+ln -s "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
+
+rm -rf "$HOME/.config/ghostty"
+ln -s "$DOTFILES/ghostty" "$HOME/.config/ghostty"
