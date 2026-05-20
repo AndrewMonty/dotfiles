@@ -1,76 +1,31 @@
--- [[ Setting options ]]
--- See `:help vim.opt`
+local opt = vim.opt
 
--- Make line numbers default
-vim.opt.number = true
-vim.opt.relativenumber = true
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
--- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
+opt.number = true -- show line numbers
+opt.relativenumber = true -- Make line numbers relative to cursor
+opt.mouse = "a" -- Enable mouse mode, can be useful for resizing splits for example!
+opt.clipboard = "unnamedplus" -- Sync clipboard between OS and Neovim.
+opt.autoindent = true -- Enable auto indentation
+opt.expandtab = true -- Use spaces instead of tabs
+opt.tabstop = 2 -- Number of spaces for a tab
+opt.softtabstop = 2 -- Number of spaces for a tab when editing
+opt.shiftwidth = 2 -- Number of spaces for autoindent
+opt.shiftround = true -- Round indent to multiple of shiftwidth
+opt.ignorecase = true -- Case-insensitive searching by default
+opt.smartcase = true -- UNLESS \C or one or more capital letters in the search term
+opt.signcolumn = "yes:1" -- Keep signcolumn on by default
+opt.list = true -- Display trailing whitespace characters
+opt.listchars = { tab = "» ", leadtab = "  ", trail = "·", nbsp = "␣" }
+opt.cursorline = true -- Show which line your cursor is on
+opt.scrolloff = 5 -- Minimal number of screen lines to keep above and below the cursor.
+opt.undofile = true -- Enable persistent undo history
+opt.showmode = false -- Don't show the mode, since it's already in the status line
+opt.fillchars = { eob = " " } -- hide ~ after the end of the buffer
+opt.wrap = false -- don't wrap lines longer than the buffer
+opt.splitright = true
+opt.splitbelow = true
+opt.completeopt:append("noselect") -- don't automatically select first autocomplete option
 
--- Don't show the mode, since it's already in the status line
-vim.opt.showmode = false
-
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
-
--- Enable break indent
-vim.opt.breakindent = true
-
--- Save undo history
-vim.opt.undofile = true
-
--- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-
--- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
-
--- Decrease update time
-vim.opt.updatetime = 250
-
--- Decrease mapped sequence wait time
--- Displays which-key popup sooner
-vim.opt.timeoutlen = 300
-
--- Configure how new splits should be opened
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-
--- Sets how neovim will display certain whitespace characters in the editor.
---  See `:help 'list'`
---  and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
--- Preview substitutions live, as you type!
-vim.opt.inccommand = 'split'
-
--- Show which line your cursor is on
-vim.opt.cursorline = true
-
--- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 5
-
--- Control whether lines longer than the terminal window wrap to a new line
-vim.opt.wrap = false
-
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.expandtab = true
-
--- enable true color
-vim.opt.termguicolors = true
-
--- local utils = require('./utils')
--- utils.setTransparentHighlights()
-
--- remove background from completion list
-vim.opt.pumblend = 0
-
--- remove background from documentation popup
-vim.opt.winblend = 0
-
+vim.cmd.filetype("plugin indent on") -- Enable filetype detection, plugins, and indentation
