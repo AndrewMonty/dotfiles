@@ -34,6 +34,11 @@ vim.lsp.enable("jsonls")
 vim.lsp.enable("astro")
 vim.lsp.enable("phpactor")
 
+-- use a swatch icon for color previews instead of changing text bg
+vim.lsp.document_color.enable(true, nil, {
+	style = "virtual",
+})
+
 -- prevent the built-in vim.lsp.completion autotrigger from selecting the first item
 vim.opt.completeopt = { "menuone", "noselect", "popup" }
 
