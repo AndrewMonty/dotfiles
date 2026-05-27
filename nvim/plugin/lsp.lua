@@ -19,6 +19,7 @@ require("mason-tool-installer").setup({
 		"jsonls",
 		"astro",
 		"phpactor",
+		"biome",
 	},
 })
 
@@ -27,6 +28,7 @@ vim.lsp.enable("html")
 vim.lsp.enable("cssls")
 vim.lsp.enable("tailwindcss")
 vim.lsp.enable("ts_ls")
+vim.lsp.enable("biome")
 vim.lsp.enable("eslint")
 vim.lsp.enable("jsonls")
 vim.lsp.enable("astro")
