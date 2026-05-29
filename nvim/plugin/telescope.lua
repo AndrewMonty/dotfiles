@@ -15,6 +15,9 @@ require("telescope").setup({
 		path_display = { truncate = 1 },
 	},
 	pickers = {
+		find_files = {
+			hidden = true,
+		},
 		oldfiles = {
 			cwd_only = true,
 		},
