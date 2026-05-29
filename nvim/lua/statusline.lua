@@ -230,11 +230,44 @@ local function git_component()
 	})
 end
 
-local function file_component()
+local function relative_path(path)
+	local cwd = vim.fn.getcwd(0)
+	local relative = vim.fs.relpath(cwd, path)
+
+	if relative and relative ~= "" then
+		return relative
+	end
+
+	return vim.fn.fnamemodify(path, ":~")
+end
+
+local function current_path()
+	local filetype = vim.bo.filetype
+
+	if filetype == "oil" then
+		local ok, oil = pcall(require, "oil")
+		if ok then
+			local dir = oil.get_current_dir()
+			if dir then
+				return relative_path(dir)
+			end
+		end
+	end
+
+	if filetype == "netrw" and vim.b.netrw_curdir then
+		return relative_path(vim.b.netrw_curdir)
+	end
+
 	local filename = vim.fn.expand("%:t")
 	if filename == "" then
-		filename = "[No Name]"
+		return "[No Name]"
 	end
+
+	return filename
+end
+
+local function file_component()
+	local filename = current_path()
 
 	local icon = ""
 	local ok, devicons = pcall(require, "nvim-web-devicons")
