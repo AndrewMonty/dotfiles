@@ -147,6 +147,7 @@ package_manager=$(detect_package_manager "$platform")
 
 ensure_package nvim neovim "$package_manager"
 ensure_package tmux tmux "$package_manager"
+ensure_package starship starship "$package_manager"
 install_ghostty "$platform" "$package_manager"
 
 mkdir -p "$HOME/.config"
@@ -159,3 +160,6 @@ ln -s "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 
 rm -rf "$HOME/.config/ghostty"
 ln -s "$DOTFILES/ghostty" "$HOME/.config/ghostty"
+
+rm -rf "$HOME/.config/starship.toml"
+ln -s "$DOTFILES/starship/starship.toml" "$HOME/.config/starship.toml"
