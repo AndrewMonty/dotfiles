@@ -142,6 +142,19 @@ ensure_package() {
 	install_package "$package_manager" "$package"
 }
 
+ensure_line() {
+	local line=$1
+	local file=$2
+
+	touch "$file"
+	if grep -qF "$line" "$file"; then
+		return
+	fi
+
+	info "Adding to $file: $line"
+	printf '%s\n' "$line" >>"$file"
+}
+
 platform=$(detect_platform)
 package_manager=$(detect_package_manager "$platform")
 
@@ -163,3 +176,5 @@ ln -s "$DOTFILES/ghostty" "$HOME/.config/ghostty"
 
 rm -rf "$HOME/.config/starship.toml"
 ln -s "$DOTFILES/starship/starship.toml" "$HOME/.config/starship.toml"
+
+ensure_line 'eval "$(starship init zsh)"' "$HOME/.zshrc"
