@@ -18,7 +18,8 @@ require("mason-tool-installer").setup({
 		"eslint",
 		"jsonls",
 		"astro",
-		"phpactor",
+		-- "phpactor",
+		"intelephense",
 		"biome",
 	},
 })
@@ -32,7 +33,8 @@ vim.lsp.enable("biome")
 vim.lsp.enable("eslint")
 vim.lsp.enable("jsonls")
 vim.lsp.enable("astro")
-vim.lsp.enable("phpactor")
+-- vim.lsp.enable("phpactor")
+vim.lsp.enable("intelephense")
 
 -- use a swatch icon for color previews instead of changing text bg
 vim.lsp.document_color.enable(true, nil, {

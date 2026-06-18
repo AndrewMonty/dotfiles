@@ -161,6 +161,7 @@ package_manager=$(detect_package_manager "$platform")
 ensure_package nvim neovim "$package_manager"
 ensure_package tmux tmux "$package_manager"
 ensure_package starship starship "$package_manager"
+ensure_package tree-sitter tree-sitter-cli "$package_manager"
 install_ghostty "$platform" "$package_manager"
 
 mkdir -p "$HOME/.config"
